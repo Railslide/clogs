@@ -5,17 +5,22 @@ import (
 	"net/http"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
-  w.Write([]byte("Hello from Clogs, the Climbing Log System"))
-}
-
 func main() {
-  mux := http.NewServeMux()
-  mux.HandleFunc("/{$}", home)
+	mux := http.NewServeMux()
 
-  log.Print("starting server on :4000")
+        // Static files
+	fileServer := http.FileServer(http.Dir("./ui/static/"))
+        mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
 
-  err := http.ListenAndServe(":4000", mux)
-  log.Fatal(err)
+	mux.HandleFunc("GET /{$}", home)
+	mux.HandleFunc("GET /route/view/{id}", routeView)
+	mux.HandleFunc("GET /route/create", routeCreate)
+	mux.HandleFunc("POST /route/create", routeCreatePost)
+	mux.HandleFunc("GET /route/edit/{id}", routeUpdate)
+
+	log.Print("starting server on :4000")
+
+	err := http.ListenAndServe(":4000", mux)
+	log.Fatal(err)
 
 }
