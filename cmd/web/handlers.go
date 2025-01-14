@@ -63,9 +63,9 @@ func (app *application) routeCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) routeCreatePost(w http.ResponseWriter, r *http.Request) {
-	name := "Some hard route by Amanda"
+	name := "The pink one in the corner"
 	grade := "6A"
-	routeType := "Lead"
+	routeType := "Top rope"
 	sent := false
 	archived := false
 	gymID := 1
