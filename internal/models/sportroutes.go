@@ -72,6 +72,33 @@ func (m *SportRouteModel) Get(id int) (SportRoute, error) {
 	return s, nil
 }
 
-func (m *SportRoute) Ongoing() ([]SportRoute, error) {
-	return nil, nil
+func (m *SportRouteModel) Ongoing() ([]SportRoute, error) {
+	stmt := `SELECT r.id, r.name, r.grade, r.route_type, g.name FROM routes r
+    JOIN gyms g on gym = g.id
+    WHERE NOT archived`
+
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var sportRoutes []SportRoute
+
+	for rows.Next() {
+		var s SportRoute
+		err = rows.Scan(&s.ID, &s.Name, &s.Grade, &s.RouteType, &s.Gym.Name)
+		if err != nil {
+			return nil, err
+		}
+		sportRoutes = append(sportRoutes, s)
+
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return sportRoutes, nil
 }

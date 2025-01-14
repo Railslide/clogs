@@ -5,28 +5,37 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"text/template"
+	// "text/template"
 
 	"github.com/railslide/clogs/internal/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	files := []string{
-		"./ui/html/base.tmpl.html",
-		"./ui/html/partials/nav.tmpl.html",
-		"./ui/html/pages/home.tmpl.html",
-	}
-	ts, err := template.ParseFiles(files...)
+	sportRoutes, err := app.sportRoutes.Ongoing()
 	if err != nil {
 		app.serverError(w, r, err)
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", nil)
-	if err != nil {
-		app.serverError(w, r, err)
-		return
+	for _, sportRoute := range sportRoutes {
+		fmt.Fprintf(w, "%+v\n", sportRoute)
 	}
+	// files := []string{
+	// 	"./ui/html/base.tmpl.html",
+	// 	"./ui/html/partials/nav.tmpl.html",
+	// 	"./ui/html/pages/home.tmpl.html",
+	// }
+	// ts, err := template.ParseFiles(files...)
+	// if err != nil {
+	// 	app.serverError(w, r, err)
+	// 	return
+	// }
+	//
+	// err = ts.ExecuteTemplate(w, "base", nil)
+	// if err != nil {
+	// 	app.serverError(w, r, err)
+	// 	return
+	// }
 }
 
 func (app *application) routeView(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +55,7 @@ func (app *application) routeView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-        fmt.Fprintf(w, "%+v", sportRoute)
+	fmt.Fprintf(w, "%+v", sportRoute)
 }
 
 func (app *application) routeCreate(w http.ResponseWriter, r *http.Request) {
@@ -54,9 +63,9 @@ func (app *application) routeCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) routeCreatePost(w http.ResponseWriter, r *http.Request) {
-	name := "The pink one in the corner"
+	name := "Some hard route by Amanda"
 	grade := "6A"
-	routeType := "Top rope"
+	routeType := "Lead"
 	sent := false
 	archived := false
 	gymID := 1
