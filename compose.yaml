@@ -1,0 +1,13 @@
+services:
+  db:
+    image: docker.io/library/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: clogs
+      MYSQL_USER: web
+      MYSQL_PASSWORD: hunter2
+    volumes:
+      - "./db/schemas:/docker-entrypoint-initdb.d"
+    ports:
+      - "3306:3306"
