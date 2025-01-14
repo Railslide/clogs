@@ -8,10 +8,12 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/railslide/clogs/internal/models"
 )
 
 type application struct {
 	logger *slog.Logger
+	sportRoutes *models.SportRouteModel
 }
 
 func openDB(dsn string) (*sql.DB, error) {
@@ -42,10 +44,11 @@ func main() {
 		os.Exit(1)
 	}
 
-        defer db.Close()
+	defer db.Close()
 
 	app := &application{
 		logger: logger,
+                sportRoutes: &models.SportRouteModel{DB: db},
 	}
 
 	logger.Info("starting server", slog.String("addr", *addr))

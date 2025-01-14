@@ -1,10 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 	"text/template"
+
+	"github.com/railslide/clogs/internal/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -33,8 +36,17 @@ func (app *application) routeView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	msg := fmt.Sprintf("Display a specific route with id %d...", id)
-	w.Write([]byte(msg))
+	sportRoute, err := app.sportRoutes.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			http.NotFound(w, r)
+		} else {
+			app.serverError(w, r, err)
+		}
+		return
+	}
+
+        fmt.Fprintf(w, "%+v", sportRoute)
 }
 
 func (app *application) routeCreate(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +54,19 @@ func (app *application) routeCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) routeCreatePost(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Save a new route..."))
+	name := "The pink one in the corner"
+	grade := "6A"
+	routeType := "Top rope"
+	sent := false
+	archived := false
+	gymID := 1
+	id, err := app.sportRoutes.Insert(name, grade, routeType, gymID, sent, archived, "")
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/route/view/%d", id), http.StatusSeeOther)
 }
 
 func (app *application) routeUpdate(w http.ResponseWriter, r *http.Request) {

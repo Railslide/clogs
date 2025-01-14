@@ -16,6 +16,6 @@ func (app *application) routes() *http.ServeMux {
 	mux.HandleFunc("POST /route/create", app.routeCreatePost)
 	mux.HandleFunc("GET /route/edit/{id}", app.routeUpdate)
 
-        return mux
+	return mux
 
 }
