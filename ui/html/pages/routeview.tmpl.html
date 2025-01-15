@@ -1,0 +1,27 @@
+{{define "title"}}Route details{{end}}
+
+{{define "main"}}
+  <div class='route'>
+    <div class='header'>
+      <span>{{.SportRoute.Name}}</span>
+      <span>{{.SportRoute.Grade}}</span>
+    </div>
+    <div class='metadata'>
+      <span>Route type: {{.SportRoute.RouteType}}</span>
+      {{if .SportRoute.Sent}}
+        <span>Status: Sent</span>
+      {{else if .SportRoute.Archived}}
+        <span>Status: Archived</span>
+      {{else}}
+        <span>Status: Ongoing</span>
+      {{end}}
+      <span>Gym: {{.SportRoute.Gym.Name}}
+    </div>
+    {{if .SportRoute.Notes}}
+    <div class='notes'>
+      <div class="sectionHeader">Notes</div>
+      <div>{{.SportRoute.Notes}}</div>
+    </div>
+    {{end}}
+
+{{end}}

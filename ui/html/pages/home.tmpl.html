@@ -2,5 +2,22 @@
 
 {{define "main"}}
   <h2>Open routes</h2>
-  <p>Nothing to see here yet!</p>
+  {{if .SportRoutes}}
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Grade</th>
+      <th>Gym</th>
+    </tr>
+    {{range .SportRoutes}}
+      <tr>
+        <td><a href='/route/view/{{.ID}}'>{{.Name}}</a></td>
+        <td>{{.Grade}}</td>
+        <td>{{.Gym.Name}}</td>
+      </tr>
+    {{end}}
+  </table>
+  {{else}}
+    <p>No open routes...go out and climb!</p>
+  {{end}}
 {{end}}
