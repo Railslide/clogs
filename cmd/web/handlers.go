@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	// "text/template"
+	"text/template"
 
 	"github.com/railslide/clogs/internal/models"
 )
@@ -55,7 +55,22 @@ func (app *application) routeView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "%+v", sportRoute)
+	files := []string{
+		"./ui/html/base.tmpl.html",
+		"./ui/html/partials/nav.tmpl.html",
+		"./ui/html/pages/routeview.tmpl.html",
+	}
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	err = ts.ExecuteTemplate(w, "base", sportRoute)
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+
 }
 
 func (app *application) routeCreate(w http.ResponseWriter, r *http.Request) {
