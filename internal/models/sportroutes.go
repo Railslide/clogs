@@ -24,6 +24,16 @@ type SportRoute struct {
 	Gym       Gym
 }
 
+func (s SportRoute) GetStatus() string {
+	if s.Sent {
+		return "Sent"
+	} else if s.Archived {
+		return "Archived"
+	} else {
+		return "Ongoing"
+	}
+}
+
 type SportRouteModel struct {
 	DB *sql.DB
 }

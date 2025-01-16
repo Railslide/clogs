@@ -7,21 +7,14 @@
       <span>{{.SportRoute.Grade}}</span>
     </div>
     <div class='metadata'>
-      <span>Route type: {{.SportRoute.RouteType}}</span>
-      {{if .SportRoute.Sent}}
-        <span>Status: Sent</span>
-      {{else if .SportRoute.Archived}}
-        <span>Status: Archived</span>
-      {{else}}
-        <span>Status: Ongoing</span>
-      {{end}}
+      <span>Type: {{.SportRoute.RouteType}}</span>
+      <span>Status: {{ .SportRoute.GetStatus }}</span>
       <span>Gym: {{.SportRoute.Gym.Name}}
     </div>
     {{if .SportRoute.Notes}}
-    <div class='notes'>
-      <div class="sectionHeader">Notes</div>
-      <div>{{.SportRoute.Notes}}</div>
-    </div>
+      <div>
+        <div class='sectionHeader'>Notes</div>
+        <div class='notes'>{{.SportRoute.Notes}}</div>
+      </div>
     {{end}}
-
 {{end}}
